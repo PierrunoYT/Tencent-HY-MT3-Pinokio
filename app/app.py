@@ -77,18 +77,18 @@ DEFAULT_PARAMS_MOE = {
 }
 
 MODELS = {
-    "tencent/Hy-MT2-1.8B": {
-        "label": "Hy-MT2-1.8B (~4 GB VRAM)",
+    "tencent/Hy-MT3-1.8B": {
+        "label": "Hy-MT3-1.8B (~4 GB VRAM)",
         "vram": "~4 GB VRAM in BF16",
         "defaults": DEFAULT_PARAMS_DENSE,
     },
-    "tencent/Hy-MT2-7B": {
-        "label": "Hy-MT2-7B (~16 GB VRAM)",
+    "tencent/Hy-MT3-7B": {
+        "label": "Hy-MT3-7B (~16 GB VRAM)",
         "vram": "~16 GB VRAM in BF16",
         "defaults": DEFAULT_PARAMS_DENSE,
     },
-    "tencent/Hy-MT2-30B-A3B": {
-        "label": "Hy-MT2-30B-A3B MoE (~60 GB weights)",
+    "tencent/Hy-MT3-30B-A3B": {
+        "label": "Hy-MT3-30B-A3B MoE (~60 GB weights)",
         "vram": "~60 GB for BF16 weights alone, plus runtime memory",
         "defaults": DEFAULT_PARAMS_MOE,
     },
@@ -130,7 +130,7 @@ def use_chinese_prompt(source_code, target_code):
 
 
 def format_terminology(terminology, use_zh):
-    """Convert user terminology lines to Hy-MT2 reference format."""
+    """Convert user terminology lines to Hy-MT3 reference format."""
     lines = []
     for raw_line in terminology.strip().splitlines():
         line = raw_line.strip()
@@ -187,11 +187,11 @@ def unload_model():
 
 
 @serialized_model_access
-def load_model(model_path="tencent/Hy-MT2-1.8B"):
+def load_model(model_path="tencent/Hy-MT3-1.8B"):
     """Load the model and tokenizer."""
     global model, tokenizer, model_name
     if model_path not in MODELS:
-        raise ValueError("Select a supported Hy-MT2 model.")
+        raise ValueError("Select a supported Hy-MT3 model.")
     if model is not None and model_name == model_path:
         return model, tokenizer
 
@@ -225,7 +225,7 @@ def build_prompt(
     preferences="",
     format_type="JSON",
 ):
-    """Build the prompt using official Hy-MT2 translation task templates."""
+    """Build the prompt using official Hy-MT3 translation task templates."""
     use_zh = use_chinese_prompt(source_lang_code, target_lang_code)
     target_name_zh = get_language_name(target_lang_code, "zh")
     target_name_en = get_language_name(target_lang_code, "en")
@@ -395,7 +395,7 @@ def translate_text(
     top_k,
     repetition_penalty,
 ):
-    """Translate text using the Hy-MT2 model."""
+    """Translate text using the Hy-MT3 model."""
     # API clients may send null for optional text fields.
     source_text, terminology, context, target_style, preferences = (
         value or "" for value in (source_text, terminology, context, target_style, preferences)
@@ -464,16 +464,16 @@ def translate_text(
 def create_interface():
     """Create the Gradio interface."""
 
-    with gr.Blocks(title="Hy-MT2 Translation", theme=gr.themes.Soft()) as demo:
+    with gr.Blocks(title="Hy-MT3 Translation", theme=gr.themes.Soft()) as demo:
         gr.Markdown(
             """
-            # Hy-MT2 Translation Interface
+            # Hy-MT3 Translation Interface
 
             Official prompt templates for
-            [Hy-MT2-1.8B](https://huggingface.co/tencent/Hy-MT2-1.8B),
-            [Hy-MT2-7B](https://huggingface.co/tencent/Hy-MT2-7B), and
-            [Hy-MT2-30B-A3B](https://huggingface.co/tencent/Hy-MT2-30B-A3B).
-            Supports all seven Hy-MT2 translation task types with 38 language and variant choices.
+            [Hy-MT3-1.8B](https://huggingface.co/tencent/Hy-MT3-1.8B),
+            [Hy-MT3-7B](https://huggingface.co/tencent/Hy-MT3-7B), and
+            [Hy-MT3-30B-A3B](https://huggingface.co/tencent/Hy-MT3-30B-A3B).
+            Supports all seven Hy-MT3 translation task types with 38 language and variant choices.
             """
         )
 
@@ -481,7 +481,7 @@ def create_interface():
             with gr.Column(scale=1):
                 model_choice = gr.Dropdown(
                     choices=list(MODELS.keys()),
-                    value="tencent/Hy-MT2-1.8B",
+                    value="tencent/Hy-MT3-1.8B",
                     label="Model",
                     info="1.8B ~4 GB | 7B ~16 GB | 30B-A3B ~60 GB weights plus runtime memory. Switching models unloads the previous one.",
                 )
@@ -657,7 +657,7 @@ def create_interface():
             - **1.8B / 7B** recommended params: temperature=0.7, top_p=0.6, top_k=20, repetition_penalty=1.05
             - **30B-A3B MoE** recommended params: temperature=0.7, top_p=1.0, top_k=-1 (disabled), repetition_penalty=1.0
             - Params auto-update when you change the model; max_tokens=4096 for all models
-            - Hy-MT2-30B-A3B is a MoE model (30B total, 3B active) and needs substantially more VRAM than 7B
+            - Hy-MT3-30B-A3B is a MoE model (30B total, 3B active) and needs substantially more VRAM than 7B
             - Language names in prompts use Chinese names for Chinese prompts and English names for English prompts
             - Terminology mode accepts `source -> target` pairs, converted to the official reference format automatically
             - Structured data mode preserves keys, tags, and placeholders while translating visible text
@@ -670,7 +670,7 @@ def create_interface():
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Hy-MT2 Gradio Interface")
+    parser = argparse.ArgumentParser(description="Hy-MT3 Gradio Interface")
     parser.add_argument("--share", action="store_true", help="Create a public link")
     parser.add_argument("--server-name", type=str, default="127.0.0.1", help="Server name")
     parser.add_argument("--server-port", type=int, default=None, help="Server port (default: first available from 7860)")

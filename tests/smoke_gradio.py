@@ -29,7 +29,7 @@ with TestClient(gr.routes.App.create_app(demo)) as client:
 
 result = asyncio.run(demo.process_api(
     endpoint['id'],
-    ['', '英语 (English)', '中文 (Chinese)', 'tencent/Hy-MT2-1.8B',
+    ['', '英语 (English)', '中文 (Chinese)', 'tencent/Hy-MT3-1.8B',
      'basic', '', '', '', '', 'JSON', 0.7, 0.6, 20, 1.05],
 ))
 assert result['data'] == ['Please enter text to translate.', 'Ready. Enter text to translate.']

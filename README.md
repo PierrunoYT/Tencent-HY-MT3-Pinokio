@@ -1,23 +1,23 @@
-# Hy-MT2 Pinokio
+# Hy-MT3 Pinokio
 
-**Hy-MT2** — A Gradio web interface for Tencent's Hy-MT2 translation models, packaged for Pinokio.
+**Hy-MT3** — A Gradio web interface for Tencent's Hy-MT3 translation models, packaged for Pinokio.
 
-Repository: [Tencent-HY-MT2-Pinokio](https://github.com/PierrunoYT/Tencent-HY-MT2-Pinokio)
+Repository: [Tencent-HY-MT3-Pinokio](https://github.com/PierrunoYT/Tencent-HY-MT3-Pinokio)
 
 ## Overview
 
-Hy-MT2 is a family of fast-thinking multilingual translation models. This launcher supports:
+Hy-MT3 is a family of fast-thinking multilingual translation models. This launcher supports:
 
-- **Hy-MT2-1.8B**: Lightweight model for edge devices and real-time translation
-- **Hy-MT2-7B**: Higher-accuracy model for complex translation tasks
-- **Hy-MT2-30B-A3B**: MoE flagship model (30B total, 3B active per token) for best quality
+- **Hy-MT3-1.8B**: Lightweight model for edge devices and real-time translation
+- **Hy-MT3-7B**: Higher-accuracy model for complex translation tasks
+- **Hy-MT3-30B-A3B**: MoE flagship model (30B total, 3B active per token) for best quality
 
 All three models support multilingual translation; the interface offers **38 language and variant choices** with instruction-following modes such as terminology, style, contextual (background), and delimiter preservation.
 
 ## Features
 
 - **38 language and variant choices**: including Traditional Chinese and Cantonese
-- **Translation Modes** (all seven official Hy-MT2 task types):
+- **Translation Modes** (all seven official Hy-MT3 task types):
   - **Basic**: Default translation
   - **Terminology**: Translation with custom terminology guide
   - **Style**: Translation with a target style (formal, casual, etc.)
@@ -131,9 +131,9 @@ On Linux/macOS, run `env/bin/python app.py`. Open the local URL printed in the t
 
 ## Model Links
 
-- **Hy-MT2-1.8B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT2-1.8B)
-- **Hy-MT2-7B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT2-7B)
-- **Hy-MT2-30B-A3B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT2-30B-A3B)
+- **Hy-MT3-1.8B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT3-1.8B)
+- **Hy-MT3-7B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT3-7B)
+- **Hy-MT3-30B-A3B**: [Hugging Face](https://huggingface.co/tencent/Hy-MT3-30B-A3B)
 
 Models are downloaded automatically from Hugging Face on first use.
 
@@ -141,7 +141,7 @@ Models are downloaded automatically from Hugging Face on first use.
 
 Recommended parameters (pre-set in the interface; sliders auto-update when you change model):
 
-**Hy-MT2-1.8B / Hy-MT2-7B**
+**Hy-MT3-1.8B / Hy-MT3-7B**
 
 - **Temperature**: 0.7
 - **Top-p**: 0.6
@@ -149,7 +149,7 @@ Recommended parameters (pre-set in the interface; sliders auto-update when you c
 - **Repetition Penalty**: 1.05
 - **Max tokens**: 4096
 
-**Hy-MT2-30B-A3B (MoE)**
+**Hy-MT3-30B-A3B (MoE)**
 
 - **Temperature**: 0.7
 - **Top-p**: 1.0
@@ -162,9 +162,9 @@ Recommended parameters (pre-set in the interface; sliders auto-update when you c
 - Python 3.10+
 - PyTorch 2.7.0 (installed by the launcher)
 - CUDA-capable GPU (recommended)
-  - **Hy-MT2-1.8B**: ~4 GB VRAM (BF16)
-  - **Hy-MT2-7B**: ~16 GB VRAM (BF16)
-  - **Hy-MT2-30B-A3B**: ~60 GB for BF16 weights alone, plus runtime memory; fewer active parameters do not reduce stored weights. CPU offload needs sufficient system RAM
+  - **Hy-MT3-1.8B**: ~4 GB VRAM (BF16)
+  - **Hy-MT3-7B**: ~16 GB VRAM (BF16)
+  - **Hy-MT3-30B-A3B**: ~60 GB for BF16 weights alone, plus runtime memory; fewer active parameters do not reduce stored weights. CPU offload needs sufficient system RAM
 - Transformers 5.6.0+
 - Gradio 5.50.0
 - Windows AMD uses CPU inference; DirectML is not integrated. Intel macOS is unsupported by the required PyTorch version.
@@ -202,7 +202,7 @@ from gradio_client import Client
 client = Client("http://127.0.0.1:7860")
 translation, status = client.predict(
     "Hello, how are you?", "英语 (English)", "中文 (Chinese)",
-    "tencent/Hy-MT2-1.8B", "basic",
+    "tencent/Hy-MT3-1.8B", "basic",
     "", "", "", "",  # terminology, context, target_style, preferences
     "JSON", 0.7, 0.6, 20, 1.05,
     api_name="/translate",
@@ -218,7 +218,7 @@ import { Client } from "@gradio/client";
 const client = await Client.connect("http://127.0.0.1:7860");
 const result = await client.predict("/translate", [
   "Hello, how are you?", "英语 (English)", "中文 (Chinese)",
-  "tencent/Hy-MT2-1.8B", "basic",
+  "tencent/Hy-MT3-1.8B", "basic",
   "", "", "", "", // terminology, context, target_style, preferences
   "JSON", 0.7, 0.6, 20, 1.05,
 ]);
@@ -231,7 +231,7 @@ console.log(translation);
 ```bash
 curl -X POST http://127.0.0.1:7860/gradio_api/call/translate \
   -H "Content-Type: application/json" \
-  -d '{"data":["Hello, how are you?","英语 (English)","中文 (Chinese)","tencent/Hy-MT2-1.8B","basic","","","","","JSON",0.7,0.6,20,1.05]}'
+  -d '{"data":["Hello, how are you?","英语 (English)","中文 (Chinese)","tencent/Hy-MT3-1.8B","basic","","","","","JSON",0.7,0.6,20,1.05]}'
 ```
 
 Copy the returned `event_id`, then retrieve the event stream:
@@ -259,7 +259,7 @@ With Gradio 5.50.0 installed, run `python tests/smoke_gradio.py` to check interf
 - GPU is recommended for faster inference
 - The 1.8B model is fastest; the 7B model is more accurate for complex text
 - The 30B-A3B MoE model offers the best quality but requires substantially more GPU memory
-- Prompt templates follow the [official Hy-MT2 documentation](https://huggingface.co/tencent/Hy-MT2-1.8B)
+- Prompt templates follow the [official Hy-MT3 documentation](https://huggingface.co/tencent/Hy-MT3-1.8B)
 
 ## License
 
@@ -267,10 +267,10 @@ Apache 2.0 — see the model card on Hugging Face.
 
 ## References
 
-- [Hy-MT2-1.8B on Hugging Face](https://huggingface.co/tencent/Hy-MT2-1.8B)
-- [Hy-MT2 Collection](https://huggingface.co/collections/tencent/hy-mt2)
-- [Hy-MT2 Report (arXiv:2605.22064)](https://arxiv.org/abs/2605.22064)
+- [Hy-MT3-1.8B on Hugging Face](https://huggingface.co/tencent/Hy-MT3-1.8B)
+- [Hy-MT3 Collection](https://huggingface.co/collections/tencent/hy-mt3)
+- [Hy-MT3 Report (arXiv:2611.27673)](https://arxiv.org/abs/2611.27673)
 
 ## Contact
 
-For questions about the Hy-MT2 models: hunyuan_opensource@tencent.com
+For questions about the Hy-MT3 models: hunyuan_opensource@tencent.com
